@@ -32,7 +32,8 @@ import { granulePermittedCmrKeys,
         collectionNonIndexedKeys } from "./searchKeys";
 
 let edsc_server = '';
-var valuesUrl = new URL(PageConfig.getBaseUrl() + 'maapsec/environment');
+console.log(PageConfig.getBaseUrl())
+var valuesUrl = new URL(PageConfig.getBaseUrl() + 'jupyter-server-extension/maapsec/environment');
 
 request('get', valuesUrl.href).then((res: RequestResult) => {
   if (res.ok) {
@@ -114,7 +115,7 @@ function activate(app: JupyterFrontEnd,
     // Paste Search Query
     if (result_type == "query") {
 
-        var getUrl = new URL(PageConfig.getBaseUrl() + 'edsc/getQuery');
+        var getUrl = new URL(PageConfig.getBaseUrl() + 'jupyter-server-extension/edsc/getQuery');
         if (query_type === 'granule') {
             getUrl.searchParams.append("cmr_query", granuleQuery);
             getUrl.searchParams.append("query_type", 'granule');
@@ -162,7 +163,7 @@ function activate(app: JupyterFrontEnd,
     // Paste Search Results
     } else {
 
-      var getUrl = new URL(PageConfig.getBaseUrl() + 'edsc/getGranules');
+      var getUrl = new URL(PageConfig.getBaseUrl() + 'jupyter-server-extension/edsc/getGranules');
       getUrl.searchParams.append("cmr_query", granuleQuery);
       getUrl.searchParams.append("limit", limit);
 

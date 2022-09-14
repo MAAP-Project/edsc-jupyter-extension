@@ -1,6 +1,6 @@
 {
   "name": "@maap-jupyterlab/edsc-jupyter-extension",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "Access EarthdataSeach Client from the ADE.",
   "keywords": [
     "jupyter",
@@ -64,6 +64,7 @@
     "@jupyterlab/statedb": "^3.1.0",
     "@lumino/coreutils": "^1.5.2",
     "@lumino/widgets": "^1.13.2",
+    "@maap-jupyterlab/edsc-jupyter-extension": "^1.0.1",
     "jquery": "^3.5.1",
     "jupyterlab_toastify": "^1.2.0",
     "qs": "^6.9.4",
@@ -97,7 +98,7 @@
   "publishConfig": {
     "access": "public"
   },
-  "jupyterlab": { 
+  "jupyterlab": {
     "extension": true,
     "outputDir": "edsc_jupyter_extension/labextension"
   },
