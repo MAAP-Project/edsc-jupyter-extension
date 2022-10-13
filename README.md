@@ -1,35 +1,34 @@
-# edsc_jupyter_extension
+# Earthdata Search Client Jupyter Extension
 
-[![Github Actions Status](https://github.com/github_username/edsc-jupyter-extension/workflows/Build/badge.svg)](https://github.com/github_username/edsc-jupyter-extension/actions/workflows/build.yml)
+Allows users to use the Earthdata Search Client (ESDC) within their JupyterLab workspace.
 
-A JupyterLab extension.
-
-
-
+To launch EDSC in your JupyterLab workspace, navigate to `Data Search -> Open EarthData Search`. This will launch EDSC in a new window within the workspace.
+  
+&nbsp;
 ## Requirements
 
-* JupyterLab >= 3.0
-
+* JupyterLab >= 3.4
+  
+&nbsp;
 ## Install
 
 To install the extension, execute:
 
 ```bash
-pip install edsc_jupyter_extension
+jupyter labextension install @maap-jupyterlab/edsc-jupyter-extension
 ```
-
+  
+&nbsp;
 ## Uninstall
 
 To remove the extension, execute:
 
 ```bash
-pip uninstall edsc_jupyter_extension
+jupyter labextension uninstall @maap-jupyterlab/edsc-jupyter-extension
 ```
-
-
-## Contributing
-
-### Development install
+  
+&nbsp;
+## Development install
 
 Note: You will need NodeJS to build the extension package.
 
@@ -64,8 +63,9 @@ By default, the `jlpm build` command generates the source maps for this extensio
 ```bash
 jupyter lab build --minimize=False
 ```
-
-### Development uninstall
+  
+&nbsp;
+## Development uninstall
 
 ```bash
 pip uninstall edsc_jupyter_extension
@@ -74,7 +74,7 @@ pip uninstall edsc_jupyter_extension
 In development mode, you will also need to remove the symlink created by `jupyter labextension develop`
 command. To find its location, you can run `jupyter labextension list` to figure out where the `labextensions`
 folder is located. Then you can remove the symlink named `edsc-jupyter-extension` within that folder.
-
-### Packaging the extension
-
-See [RELEASE](RELEASE.md)
+  
+&nbsp;
+## Questions?
+Refer to the [Q&A discussion board](https://github.com/MAAP-Project/edsc-jupyter-extension/discussions/categories/q-a).
