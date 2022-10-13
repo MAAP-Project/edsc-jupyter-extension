@@ -39,7 +39,7 @@ The `jlpm` command is JupyterLab's pinned version of
 
 ```bash
 # Clone the repo to your local environment
-# Change directory to the edsc_jupyter_extension directory
+# Change directory to the edsc-jupyter-extension directory
 # Install package in development mode
 pip install -e .
 # Link your development version of the extension with JupyterLab
