@@ -65,6 +65,9 @@ By default, the `jlpm build` command generates the source maps for this extensio
 jupyter lab build --minimize=False
 ```
 
+### Troubleshooting
+Try running `pip install jupyter_packaging`. If you are still getting a Module Not Found error for jupyter_packaging, try running the above commands with `sudo`
+
 ### Development uninstall
 
 ```bash
