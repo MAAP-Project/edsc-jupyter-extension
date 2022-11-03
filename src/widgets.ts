@@ -107,7 +107,7 @@ export class LimitPopupWidget extends Widget {
 
   /* sets limit */
   getValue() {
-    globals.limit = (<HTMLInputElement>document.getElementById('inputLimit')).value;
+    globals.limit = parseInt((<HTMLInputElement>document.getElementById('inputLimit')).value);
     console.log("new limit is: ", globals.limit)
     INotification.success("Results limit is now set to " + globals.limit);
   }

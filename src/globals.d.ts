@@ -1,4 +1,4 @@
-export var limit: any;
+export var limit: number;
 export var granuleParams: any;
 export var collectionParams: any;
 export var granuleQuery: any;

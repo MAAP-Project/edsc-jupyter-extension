@@ -35,6 +35,7 @@ import { granulePermittedCmrKeys,
 let edsc_server = '';
 console.log(PageConfig.getBaseUrl())
 var valuesUrl = new URL(PageConfig.getBaseUrl() + 'jupyter-server-extension/maapsec/environment');
+let DEFAULT_RESULTS_LIMIT = 1000;
 
 request('get', valuesUrl.href).then((res: RequestResult) => {
   if (res.ok) {
@@ -124,7 +125,7 @@ function activate(app: JupyterFrontEnd,
             getUrl.searchParams.append("cmr_query", globals.collectionQuery);
             getUrl.searchParams.append("query_type", 'collection');
         }
-        getUrl.searchParams.append("limit", globals.limit);
+        getUrl.searchParams.append("limit", String(globals.limit));
 
         // Make call to back end
         var xhr = new XMLHttpRequest();
@@ -166,7 +167,7 @@ function activate(app: JupyterFrontEnd,
 
       var getUrl = new URL(PageConfig.getBaseUrl() + 'jupyter-server-extension/edsc/getGranules');
       getUrl.searchParams.append("cmr_query", globals.granuleQuery);
-      getUrl.searchParams.append("limit", globals.limit);
+      getUrl.searchParams.append("limit", String(globals.limit));
 
       // Make call to back end
       var xhr = new XMLHttpRequest();
@@ -311,6 +312,9 @@ function activate(app: JupyterFrontEnd,
 
 
   console.log('JupyterLab extension edsc_extension is activated!');
+  // assign default value to limit
+  console.log("graceal- set global limit");
+  globals.limit = DEFAULT_RESULTS_LIMIT;
   return instanceTracker;
 };
 
