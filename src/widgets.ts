@@ -6,8 +6,7 @@ import {
   request, RequestResult
 } from './request';
 
-//import "./globals"
-import globals from "./globals";
+import "./globals"
 
 let unique = 0;
 
@@ -65,9 +64,9 @@ class ParamsPopupWidget extends Widget {
     let body = document.createElement('div');
     body.style.display = 'flex';
     body.style.flexDirection = 'column';
-    body.innerHTML = "<pre>Granule search: " + JSON.stringify(globals.granuleParams, null, " ") + "</pre><br>"
-        + "<pre>Collection search: " + JSON.stringify(globals.collectionParams, null, " ") + "</pre><br>"
-        + "<pre>Results Limit: " + globals.limit + "</pre>";
+    body.innerHTML = "<pre>Granule search: " + JSON.stringify(granuleParams, null, " ") + "</pre><br>"
+        + "<pre>Collection search: " + JSON.stringify(collectionParams, null, " ") + "</pre><br>"
+        + "<pre>Results Limit: " + limit + "</pre>";
 
     super({ node: body });
   }
@@ -107,12 +106,9 @@ export class LimitPopupWidget extends Widget {
 
   /* sets limit */
   getValue() {
-    globals.limit = parseInt((<HTMLInputElement>document.getElementById('inputLimit')).value);
-    if (globals.limit == NaN) {
-      INotification.error("Results limit was not set. Please enter a number");
-    }
-    console.log("new limit is: ", globals.limit)
-    INotification.success("Results limit is now set to " + globals.limit);
+    limit = (<HTMLInputElement>document.getElementById('inputLimit')).value;
+    console.log("new limit is: ", limit)
+    INotification.success("Results limit is now set to " + limit);
   }
 
 }
