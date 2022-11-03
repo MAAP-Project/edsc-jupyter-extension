@@ -65,7 +65,6 @@ class ParamsPopupWidget extends Widget {
     let body = document.createElement('div');
     body.style.display = 'flex';
     body.style.flexDirection = 'column';
-    console.log("graceal- in params popup widget");
     body.innerHTML = "<pre>Granule search: " + JSON.stringify(globals.granuleParams, null, " ") + "</pre><br>"
         + "<pre>Collection search: " + JSON.stringify(globals.collectionParams, null, " ") + "</pre><br>"
         + "<pre>Results Limit: " + globals.limit + "</pre>";
@@ -108,9 +107,9 @@ export class LimitPopupWidget extends Widget {
 
   /* sets limit */
   getValue() {
-    limit = (<HTMLInputElement>document.getElementById('inputLimit')).value;
-    console.log("new limit is: ", limit)
-    INotification.success("Results limit is now set to " + limit);
+    globals.limit = (<HTMLInputElement>document.getElementById('inputLimit')).value;
+    console.log("new limit is: ", globals.limit)
+    INotification.success("Results limit is now set to " + globals.limit);
   }
 
 }
