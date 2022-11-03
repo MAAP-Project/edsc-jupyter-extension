@@ -6,7 +6,8 @@ import {
   request, RequestResult
 } from './request';
 
-import "./globals"
+//import "./globals"
+import globals from "./globals";
 
 let unique = 0;
 
@@ -64,9 +65,10 @@ class ParamsPopupWidget extends Widget {
     let body = document.createElement('div');
     body.style.display = 'flex';
     body.style.flexDirection = 'column';
-    body.innerHTML = "<pre>Granule search: " + JSON.stringify(granuleParams, null, " ") + "</pre><br>"
-        + "<pre>Collection search: " + JSON.stringify(collectionParams, null, " ") + "</pre><br>"
-        + "<pre>Results Limit: " + limit + "</pre>";
+    console.log("graceal- in params popup widget");
+    body.innerHTML = "<pre>Granule search: " + JSON.stringify(globals.granuleParams, null, " ") + "</pre><br>"
+        + "<pre>Collection search: " + JSON.stringify(globals.collectionParams, null, " ") + "</pre><br>"
+        + "<pre>Results Limit: " + globals.limit + "</pre>";
 
     super({ node: body });
   }
