@@ -22,7 +22,7 @@ import * as $ from "jquery";
 import { decodeUrlParams } from './urlParser';
 import '../style/index.css';
 import { IFrameWidget } from './widgets';
-import { setResultsLimit, displaySearchParams } from './popups'
+import { setResultsLimit, displaySearchParams } from './popups';
 import globals from "./globals";
 //import "./globals"
 
@@ -315,9 +315,6 @@ function activate(app: JupyterFrontEnd,
   // assign default values because globals file wasn't doing it
   globals.limit = DEFAULT_RESULTS_LIMIT;
   globals.granuleParams = null;
-  if (globals.granuleParams == null){
-    console.log("graceal granule params is null in index.ts");
-  }
   globals.collectionParams = null;
   return instanceTracker;
 };

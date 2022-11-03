@@ -65,11 +65,17 @@ class ParamsPopupWidget extends Widget {
     let body = document.createElement('div');
     body.style.display = 'flex';
     body.style.flexDirection = 'column';
-    if (globals.granuleParams == null){
-      console.log("graceal granule params is null in params pop up");
+    //NOTE graceal- make sure concept_id is always null if nothing there 
+    let showGranuleParams = globals.granuleParams;
+    let showCollectionParams = globals.collectionParams;
+    if (showGranuleParams != null && showGranuleParams["concept_id"].length == 0) {
+      showGranuleParams = null;
     }
-    body.innerHTML = "<pre>Granule search: " + JSON.stringify(globals.granuleParams, null, " ") + "</pre><br>"
-        + "<pre>Collection search: " + JSON.stringify(globals.collectionParams, null, " ") + "</pre><br>"
+    if (showCollectionParams !=null && showCollectionParams["concept_id"].length == 0) {
+      showCollectionParams = null;
+    }
+    body.innerHTML = "<pre>Granule search: " + JSON.stringify(showGranuleParams, null, " ") + "</pre><br>"
+        + "<pre>Collection search: " + JSON.stringify(showCollectionParams, null, " ") + "</pre><br>"
         + "<pre>Results Limit: " + globals.limit + "</pre>";
 
     super({ node: body });
@@ -116,15 +122,13 @@ export class LimitPopupWidget extends Widget {
    * A float is automatically rounded down to the next closest integer 
    */
   getValue() {
-    let limit_temp = parseInt((<HTMLInputElement>document.getElementById('inputLimit')).value);
-      console.log("graceal trying to get nan to not work");
-      console.log(typeof limit_temp);
-    if (Number.isNaN(limit_temp) || limit_temp < 0) {
+    let limitTemp = parseInt((<HTMLInputElement>document.getElementById('inputLimit')).value);
+    if (Number.isNaN(limitTemp) || limitTemp < 0) {
       INotification.error("Please enter a positive integer for results limit");
-    } else if (limit_temp > Number.MAX_SAFE_INTEGER) {
+    } else if (limitTemp > Number.MAX_SAFE_INTEGER) {
       INotification.error("Please enter a positive integer less than 9007199254740991");
     } else {
-      globals.limit = limit_temp;
+      globals.limit = limitTemp;
       console.log("new limit is: ", globals.limit)
       INotification.success("Results limit is now set to " + globals.limit);
     }
