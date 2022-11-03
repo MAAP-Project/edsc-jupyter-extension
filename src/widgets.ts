@@ -111,15 +111,18 @@ export class LimitPopupWidget extends Widget {
   /* sets limit */
   /**
    * Check for the following error cases in limit: some letters some numbers, negative number 
-   * float with letters and numbers, operations/ other characters, and value greater than maximum int/ 
-   * less than the minimum safe int
+   * float with letters and numbers, operations/ other characters, and value greater than maximum int
+   * (9007199254740991)
    * A float is automatically rounded down to the next closest integer 
    */
   getValue() {
     let limit_temp = parseInt((<HTMLInputElement>document.getElementById('inputLimit')).value);
-
-    if (limit_temp == NaN || limit_temp < 0 || limit_temp > Number.MAX_SAFE_INTEGER || limit_temp < Number.MIN_SAFE_INTEGER) {
+      console.log("graceal trying to get nan to not work");
+      console.log(typeof limit_temp);
+    if (Number.isNaN(limit_temp) || limit_temp < 0) {
       INotification.error("Please enter a positive integer for results limit");
+    } else if (limit_temp > Number.MAX_SAFE_INTEGER) {
+      INotification.error("Please enter a positive integer less than 9007199254740991");
     } else {
       globals.limit = limit_temp;
       console.log("new limit is: ", globals.limit)
