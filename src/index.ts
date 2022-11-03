@@ -124,7 +124,7 @@ function activate(app: JupyterFrontEnd,
             getUrl.searchParams.append("cmr_query", globals.collectionQuery);
             getUrl.searchParams.append("query_type", 'collection');
         }
-        getUrl.searchParams.append("limit", globals.limit);
+        getUrl.searchParams.append("limit", String(globals.limit));
 
         // Make call to back end
         var xhr = new XMLHttpRequest();
@@ -166,7 +166,7 @@ function activate(app: JupyterFrontEnd,
 
       var getUrl = new URL(PageConfig.getBaseUrl() + 'jupyter-server-extension/edsc/getGranules');
       getUrl.searchParams.append("cmr_query", globals.granuleQuery);
-      getUrl.searchParams.append("limit", globals.limit);
+      getUrl.searchParams.append("limit", String(globals.limit));
 
       // Make call to back end
       var xhr = new XMLHttpRequest();
