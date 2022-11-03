@@ -312,9 +312,13 @@ function activate(app: JupyterFrontEnd,
 
 
   console.log('JupyterLab extension edsc_extension is activated!');
-  // assign default value to limit
-  console.log("graceal- set global limit");
+  // assign default values because globals file wasn't doing it
   globals.limit = DEFAULT_RESULTS_LIMIT;
+  globals.granuleParams = null;
+  if (globals.granuleParams == null){
+    console.log("graceal granule params is null in index.ts");
+  }
+  globals.collectionParams = null;
   return instanceTracker;
 };
 

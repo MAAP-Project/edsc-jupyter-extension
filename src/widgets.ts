@@ -65,6 +65,9 @@ class ParamsPopupWidget extends Widget {
     let body = document.createElement('div');
     body.style.display = 'flex';
     body.style.flexDirection = 'column';
+    if (globals.granuleParams == null){
+      console.log("graceal granule params is null in params pop up");
+    }
     body.innerHTML = "<pre>Granule search: " + JSON.stringify(globals.granuleParams, null, " ") + "</pre><br>"
         + "<pre>Collection search: " + JSON.stringify(globals.collectionParams, null, " ") + "</pre><br>"
         + "<pre>Results Limit: " + globals.limit + "</pre>";
@@ -106,10 +109,23 @@ export class LimitPopupWidget extends Widget {
   }
 
   /* sets limit */
+  /**
+   * Check for the following error cases in limit: some letters some numbers, negative number 
+   * float with letters and numbers, operations/ other characters, and value greater than maximum int/ 
+   * less than the minimum safe int
+   * A float is automatically rounded down to the next closest integer 
+   */
   getValue() {
-    globals.limit = parseInt((<HTMLInputElement>document.getElementById('inputLimit')).value);
-    console.log("new limit is: ", globals.limit)
-    INotification.success("Results limit is now set to " + globals.limit);
+    let limit_temp = parseInt((<HTMLInputElement>document.getElementById('inputLimit')).value);
+
+    if (limit_temp == NaN || limit_temp < 0 || limit_temp > Number.MAX_SAFE_INTEGER || limit_temp < Number.MIN_SAFE_INTEGER) {
+      INotification.error("Please enter a positive integer for results limit");
+    } else {
+      globals.limit = limit_temp;
+      console.log("new limit is: ", globals.limit)
+      INotification.success("Results limit is now set to " + globals.limit);
+    }
+
   }
 
 }
