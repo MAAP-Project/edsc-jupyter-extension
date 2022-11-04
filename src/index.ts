@@ -38,10 +38,12 @@ var valuesUrl = new URL(PageConfig.getBaseUrl() + 'jupyter-server-extension/maap
 let DEFAULT_RESULTS_LIMIT = 1000;
 
 request('get', valuesUrl.href).then((res: RequestResult) => {
-  if (res.ok) {
+  console.log("graceal- making a get request");
+  edsc_server = 'https://search.earthdata.nasa.gov/search';
+  /*if (res.ok) {
     let environment = JSON.parse(res.data);
     edsc_server = 'https://' + environment['edsc_server'];
-  }
+  }*/
 });
 
 ///////////////////////////////////////////////////////////////
@@ -77,15 +79,20 @@ function activate(app: JupyterFrontEnd,
   //
   window.addEventListener("message", (event: MessageEvent) => {
       // if the message sent is the edsc url
+      console.log("graceal- message being sent by iframe", event.data);
       if (typeof event.data === "string"){
           //globals.edscUrl = event.data;
           globals.edscUrl = event.data;
-          const queryString = '?' + event.data.split('?')[1];
-          const decodedUrlObj = decodeUrlParams(queryString);
-          globals.granuleQuery = "https://fake.com/?" + buildCmrQuery(decodedUrlObj, granulePermittedCmrKeys, granuleNonIndexedKeys, );
-          globals.collectionQuery = "https://fake.com/?" + buildCmrQuery(decodedUrlObj, collectionPermittedCmrKeys, collectionNonIndexedKeys, false);
-          // console.log("Granule", globals.granuleQuery);
-          // console.log("Collection", globals.collectionQuery);
+          if (!globals.edscUrl.endsWith("search")) {
+            console.log("graceal- ends with search and not resetting variables");
+            const queryString = '?' + event.data.split('?')[1];
+            const decodedUrlObj = decodeUrlParams(queryString);
+            globals.granuleQuery = "https://fake.com/?" + buildCmrQuery(decodedUrlObj, granulePermittedCmrKeys, granuleNonIndexedKeys, );
+            globals.collectionQuery = "https://fake.com/?" + buildCmrQuery(decodedUrlObj, collectionPermittedCmrKeys, collectionNonIndexedKeys, false);
+            // console.log("Granule", globals.granuleQuery);
+            // console.log("Collection", globals.collectionQuery);
+          }
+          
       }
   });
 

@@ -3,8 +3,6 @@ import { granuleParams, collectionParams } from "./globals";
 //import globals from "./globals";
 
 export const buildCmrQuery = (urlParams, nonIndexedKeys, permittedCmrKeys, granule=true) => {
-    console.log("graceal- in the build cmr query fcn");
-    console.log(granuleParams);
     return buildParams({
         body: camelCaseKeysToUnderscore(urlParams),
         nonIndexedKeys,
@@ -31,9 +29,7 @@ export const buildParams = (paramObj) => {
     const obj = pick(body, permittedCmrKeys)
     granule ? granuleParams = obj : collectionParams = obj;
 
-    console.log("graceal- unfiltered", body);
-    console.log("filtered", obj);
-    console.log("granule", granule);
+    console.log("graceal filtered", obj);
 
     // For JSON requests we want dont want to stringify the params returned
     if (stringifyResult) {
