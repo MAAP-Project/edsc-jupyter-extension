@@ -38,12 +38,10 @@ var valuesUrl = new URL(PageConfig.getBaseUrl() + 'jupyter-server-extension/maap
 let DEFAULT_RESULTS_LIMIT = 1000;
 
 request('get', valuesUrl.href).then((res: RequestResult) => {
-  console.log("graceal- making a get request");
-  edsc_server = 'https://search.earthdata.nasa.gov/search';
-  /*if (res.ok) {
+  if (res.ok) {
     let environment = JSON.parse(res.data);
     edsc_server = 'https://' + environment['edsc_server'];
-  }*/
+  }
 });
 
 ///////////////////////////////////////////////////////////////
@@ -84,7 +82,7 @@ function activate(app: JupyterFrontEnd,
           //globals.edscUrl = event.data;
           globals.edscUrl = event.data;
           if (!globals.edscUrl.endsWith("search")) {
-            console.log("graceal- ends with search and not resetting variables");
+            console.log("graceal- doesnt with search and resetting variables");
             const queryString = '?' + event.data.split('?')[1];
             const decodedUrlObj = decodeUrlParams(queryString);
             globals.granuleQuery = "https://fake.com/?" + buildCmrQuery(decodedUrlObj, granulePermittedCmrKeys, granuleNonIndexedKeys, );
