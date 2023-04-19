@@ -33,7 +33,8 @@ import { granulePermittedCmrKeys,
 
 let edsc_server = '';
 console.log(PageConfig.getBaseUrl())
-var valuesUrl = new URL(PageConfig.getBaseUrl() + 'jupyter-server-extension/maapsec/environment');
+//var valuesUrl = new URL(PageConfig.getBaseUrl() + 'jupyter-server-extension/maapsec/environment');
+var valuesUrl = new URL(PageConfig.getBaseUrl() + 'jupyter-server-extension/getConfig');
 
 request('get', valuesUrl.href).then((res: RequestResult) => {
   if (res.ok) {
