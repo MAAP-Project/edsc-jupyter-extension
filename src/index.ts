@@ -7,7 +7,8 @@ import { PageConfig } from '@jupyterlab/coreutils'
 import { IDocumentManager } from '@jupyterlab/docmanager';
 import { IMainMenu } from '@jupyterlab/mainmenu';
 import { NotebookActions, NotebookPanel, INotebookTracker } from '@jupyterlab/notebook';
-import { request, RequestResult } from './request';
+import { Notification } from '@jupyterlab/apputils';
+
 
 
 /** phosphor imports **/
@@ -15,7 +16,6 @@ import { Menu } from '@lumino/widgets';
 import { ReadonlyJSONObject } from '@lumino/coreutils';
 
 /** other external imports **/
-import { INotification } from "jupyterlab_toastify";
 import * as $ from "jquery";
 
 /** internal imports **/
@@ -24,7 +24,7 @@ import '../style/index.css';
 import { IFrameWidget } from './widgets';
 import { setResultsLimit, displaySearchParams } from './popups';
 import globals from "./globals";
-//import "./globals"
+import { request, RequestResult } from './request';
 
 import { buildCmrQuery } from "./buildCmrQuery";
 import { granulePermittedCmrKeys,
@@ -34,7 +34,8 @@ import { granulePermittedCmrKeys,
 
 let edsc_server = '';
 console.log(PageConfig.getBaseUrl())
-var valuesUrl = new URL(PageConfig.getBaseUrl() + 'jupyter-server-extension/maapsec/environment');
+//var valuesUrl = new URL(PageConfig.getBaseUrl() + 'jupyter-server-extension/maapsec/environment');
+var valuesUrl = new URL(PageConfig.getBaseUrl() + 'jupyter-server-extension/getConfig');
 let DEFAULT_RESULTS_LIMIT = 1000;
 
 request('get', valuesUrl.href).then((res: RequestResult) => {
@@ -115,7 +116,7 @@ function activate(app: JupyterFrontEnd,
 
     // If no search is selected, send an error
     if (Object.keys(globals.granuleParams).length == 0) {
-        INotification.error("Error: No Search Selected.");
+        Notification.error("Error: No Search Selected.", {autoClose: 3000});
         return;
     }
 
@@ -155,7 +156,7 @@ function activate(app: JupyterFrontEnd,
           }
           else {
               console.log("Error making call to get query. Status is " + xhr.status);
-              INotification.error("Error making call to get search query. Have you selected valid search parameters?");
+              Notification.error("Error making call to get search query. Have you selected valid search parameters?", {autoClose: 3000});
           }
         };
 
@@ -198,7 +199,7 @@ function activate(app: JupyterFrontEnd,
           }
           else {
               console.log("Error making call to get results. Status is " + xhr.status);
-               INotification.error("Error making call to get search results. Have you selected valid search parameters?");
+               Notification.error("Error making call to get search results. Have you selected valid search parameters?", {autoClose: 3000});
           }
       };
 

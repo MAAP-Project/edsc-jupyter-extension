@@ -1,6 +1,6 @@
 import { Widget } from '@lumino/widgets';
 import { PageConfig } from '@jupyterlab/coreutils'
-import { INotification } from "jupyterlab_toastify";
+import { Notification } from '@jupyterlab/apputils';
 
 import {
   request, RequestResult
@@ -124,13 +124,13 @@ export class LimitPopupWidget extends Widget {
   getValue() {
     let limitTemp = parseInt((<HTMLInputElement>document.getElementById('inputLimit')).value);
     if (Number.isNaN(limitTemp) || limitTemp < 0) {
-      INotification.error("Please enter a positive integer for results limit");
+      Notification.error("Please enter a positive integer for results limit", {autoClose: 3000});
     } else if (limitTemp > Number.MAX_SAFE_INTEGER) {
-      INotification.error("Please enter a positive integer less than 9007199254740991");
+      Notification.error("Please enter a positive integer less than 9007199254740991");
     } else {
       globals.limit = limitTemp;
       console.log("new limit is: ", globals.limit)
-      INotification.success("Results limit is now set to " + globals.limit);
+      Notification.success("Results limit is now set to " + globals.limit);
     }
 
   }
