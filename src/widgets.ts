@@ -111,6 +111,7 @@ export class LimitPopupWidget extends Widget {
 
       let inputLimit = document.createElement('input');
       inputLimit.id = 'inputLimit';
+      inputLimit.value = String(globals.limit);
       this.node.appendChild(inputLimit);
   }
 
