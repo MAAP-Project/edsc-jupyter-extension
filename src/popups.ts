@@ -2,11 +2,8 @@
 
 import {Dialog, showDialog} from "@jupyterlab/apputils";
 import {LimitPopupWidget, ParamsPopupWidget} from "./widgets";
-import globals from "./globals";
-//import "./globals"
 
 export function setResultsLimit() {
-    console.log("old limit is: ", globals.limit);
     showDialog({
         title: 'Set Results Limit:',
         body: new LimitPopupWidget(),

@@ -130,8 +130,6 @@ export class LimitPopupWidget extends Widget {
       Notification.error("Please enter a positive integer less than 9007199254740991");
     } else {
       globals.limit = limitTemp;
-      console.log("new limit is: ", globals.limit)
-      Notification.success("Results limit is now set to " + globals.limit);
     }
 
   }

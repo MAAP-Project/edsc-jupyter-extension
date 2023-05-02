@@ -83,7 +83,7 @@ function activate(app: JupyterFrontEnd,
           //globals.edscUrl = event.data;
           globals.edscUrl = event.data;
           if (!globals.edscUrl.endsWith("search")) {
-            console.log("graceal- doesnt with search and resetting variables");
+            console.log("graceal- doesnt end with search and resetting variables");
             const queryString = '?' + event.data.split('?')[1];
             const decodedUrlObj = decodeUrlParams(queryString);
             globals.granuleQuery = "https://fake.com/?" + buildCmrQuery(decodedUrlObj, granulePermittedCmrKeys, granuleNonIndexedKeys, );
