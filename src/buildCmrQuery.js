@@ -25,8 +25,10 @@ export const buildParams = (paramObj) => {
         stringifyResult = true
     } = paramObj;
 
-
-    const obj = pick(body, permittedCmrKeys)
+    let obj = pick(body, permittedCmrKeys)
+    if (!obj.concept_id || obj.concept_id.length==0) {
+        obj = null;
+    }
     granule ? granuleParams = obj : collectionParams = obj;
 
     console.log("graceal filtered", obj);

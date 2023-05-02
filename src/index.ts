@@ -115,8 +115,8 @@ function activate(app: JupyterFrontEnd,
     const current = getCurrent(args);
 
     // If no search is selected, send an error
-    if (Object.keys(globals.granuleParams).length == 0) {
-        Notification.error("Error: No Search Selected.", {autoClose: 3000});
+    if (!globals.granuleParams || Object.keys(globals.granuleParams).length == 0) {
+        Notification.error("Error: No Search Selected. Select collections through the green plus in EarthData Search Client.", {autoClose: 3000});
         return;
     }
 
@@ -199,7 +199,7 @@ function activate(app: JupyterFrontEnd,
           }
           else {
               console.log("Error making call to get results. Status is " + xhr.status);
-               Notification.error("Error making call to get search results. Have you selected valid search parameters?", {autoClose: 3000});
+              Notification.error("Error making call to get search results. Have you selected valid search parameters?", {autoClose: 3000});
           }
       };
 
