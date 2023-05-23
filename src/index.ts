@@ -36,7 +36,7 @@ let edsc_server = '';
 console.log(PageConfig.getBaseUrl())
 //var valuesUrl = new URL(PageConfig.getBaseUrl() + 'jupyter-server-extension/maapsec/environment');
 var valuesUrl = new URL(PageConfig.getBaseUrl() + 'jupyter-server-extension/getConfig');
-let DEFAULT_RESULTS_LIMIT = 1000;
+let DEFAULT_RESULTS_LIMIT = 100;
 
 request('get', valuesUrl.href).then((res: RequestResult) => {
   if (res.ok) {

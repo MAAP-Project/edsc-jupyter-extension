@@ -1,4 +1,4 @@
-var limit = "1000";
+var limit = "100";
 var params = {};
 var granuleParams;
 var collectionParams;
