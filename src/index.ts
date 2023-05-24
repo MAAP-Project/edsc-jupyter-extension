@@ -80,18 +80,11 @@ function activate(app: JupyterFrontEnd,
       // if the message sent is the edsc url
       console.log("graceal- message being sent by iframe", event.data);
       if (typeof event.data === "string"){
-          //globals.edscUrl = event.data;
           globals.edscUrl = event.data;
-          if (!globals.edscUrl.endsWith("search")) {
-            console.log("graceal- doesnt end with search and resetting variables");
-            const queryString = '?' + event.data.split('?')[1];
-            const decodedUrlObj = decodeUrlParams(queryString);
-            globals.granuleQuery = "https://fake.com/?" + buildCmrQuery(decodedUrlObj, granulePermittedCmrKeys, granuleNonIndexedKeys, );
-            globals.collectionQuery = "https://fake.com/?" + buildCmrQuery(decodedUrlObj, collectionPermittedCmrKeys, collectionNonIndexedKeys, false);
-            // console.log("Granule", globals.granuleQuery);
-            // console.log("Collection", globals.collectionQuery);
-          }
-          
+          const queryString = '?' + event.data.split('?')[1];
+          const decodedUrlObj = decodeUrlParams(queryString);
+          globals.granuleQuery = "https://fake.com/?" + buildCmrQuery(decodedUrlObj, granulePermittedCmrKeys, granuleNonIndexedKeys, );
+          globals.collectionQuery = "https://fake.com/?" + buildCmrQuery(decodedUrlObj, collectionPermittedCmrKeys, collectionNonIndexedKeys, false);
       }
   });
 
