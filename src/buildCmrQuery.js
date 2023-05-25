@@ -25,7 +25,7 @@ export const buildParams = (paramObj) => {
         stringifyResult = true
     } = paramObj;
 
-    let obj = pick(body, permittedCmrKeys)
+    let obj = pick(body, permittedCmrKeys);
     if (!obj.concept_id || obj.concept_id.length==0) {
         obj = null;
     }
@@ -34,7 +34,7 @@ export const buildParams = (paramObj) => {
     // For JSON requests we want dont want to stringify the params returned
     if (stringifyResult) {
         // Transform the query string hash to an encoded url string
-        const queryParams = prepKeysForCmr(obj, nonIndexedKeys)
+        const queryParams = prepKeysForCmr(obj, nonIndexedKeys);
         return queryParams
     }
 
@@ -122,6 +122,16 @@ export const prepKeysForCmr = (queryParams, nonIndexedKeys = []) => {
         nonIndexedAttrs[key] = indexedAttrs[key]
         delete indexedAttrs[key]
     })
+    // problem where returned statement has boundingBox[0]="" which is a syntax error. 
+    // This checks if a value is an object and contains 0 as a key which likely means it is indexed
+    // Set to the first value by default, because I cannot find an instance where we need it passed as a list
+    // nor do we currently support that for the searchCollection/ searchGranule functions
+    // This still needs some testing, but seems like the best way to do this right now
+    Object.keys(indexedAttrs).forEach(key => {
+        if (typeof indexedAttrs[key] === 'object' && Object.keys(indexedAttrs[key]).includes('0')) {
+            indexedAttrs[key] = indexedAttrs[key][0];
+        }
+    });
 
     return [
         stringify(indexedAttrs),
