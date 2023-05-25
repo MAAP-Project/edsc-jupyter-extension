@@ -123,6 +123,17 @@ export const prepKeysForCmr = (queryParams, nonIndexedKeys = []) => {
         delete indexedAttrs[key]
     })
 
+    // problem where returned statement has boundingBox[0]="" which is a syntax error. 
+    // This checks if a value is an object and contains 0 as a key which likely means it is indexed
+    // Set to the first value by default, because I cannot find an instance where we need it passed as a list
+    // nor do we currently support that for the searchCollection/ searchGranule functions
+    // This still needs some testing, but seems like the best way to do this right now
+    Object.keys(indexedAttrs).forEach(key => {
+        if (typeof indexedAttrs[key] === 'object' && Object.keys(indexedAttrs[key]).includes('0')) {
+            indexedAttrs[key] = indexedAttrs[key][0];
+        }
+    });
+
     return [
         stringify(indexedAttrs),
         stringify(nonIndexedAttrs, { indices: false, arrayFormat: 'brackets' })
