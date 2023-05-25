@@ -31,8 +31,6 @@ export const buildParams = (paramObj) => {
     }
     granule ? granuleParams = obj : collectionParams = obj;
 
-    console.log("graceal filtered", obj);
-
     // For JSON requests we want dont want to stringify the params returned
     if (stringifyResult) {
         // Transform the query string hash to an encoded url string

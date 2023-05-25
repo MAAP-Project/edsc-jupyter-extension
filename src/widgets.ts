@@ -65,7 +65,7 @@ class ParamsPopupWidget extends Widget {
     let body = document.createElement('div');
     body.style.display = 'flex';
     body.style.flexDirection = 'column';
-    //NOTE graceal- make sure concept_id is always null if nothing there 
+    
     let showGranuleParams = globals.granuleParams;
     let showCollectionParams = globals.collectionParams;
     if (showGranuleParams != null && showGranuleParams["concept_id"].length == 0) {
