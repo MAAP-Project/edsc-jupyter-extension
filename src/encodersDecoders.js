@@ -709,6 +709,7 @@ export const decodeCollections = (params) => {
         let variableIds
         if (pg && pg[index]) {
             // Excluded Granules
+            //graceal2 this is where I would make the change to alter the logic of excluded granules
             ({ isCwic: excludedIsCwic, granuleIds: excludedGranuleIds } = decodedGranules('x', pg[index]));
 
             ({ isCwic: addedIsCwic, granuleIds: addedGranuleIds = [] } = decodedGranules('a', pg[index]));

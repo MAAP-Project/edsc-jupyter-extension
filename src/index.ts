@@ -80,11 +80,12 @@ function activate(app: JupyterFrontEnd,
       // if the message sent is the edsc url
       console.log("graceal- message being sent by iframe", event.data);
       if (typeof event.data === "string"){
-          globals.edscUrl = event.data;
-          const queryString = '?' + event.data.split('?')[1];
-          const decodedUrlObj = decodeUrlParams(queryString);
-          globals.granuleQuery = "https://fake.com/?" + buildCmrQuery(decodedUrlObj, granulePermittedCmrKeys, granuleNonIndexedKeys, );
-          globals.collectionQuery = "https://fake.com/?" + buildCmrQuery(decodedUrlObj, collectionPermittedCmrKeys, collectionNonIndexedKeys, false);
+        globals.edscUrl = event.data;
+        const queryString = '?' + event.data.split('?')[1];
+        const decodedUrlObj = decodeUrlParams(queryString);
+        //graceal2 make sure to switch permitted and non index because trying to match funciton definition
+        globals.granuleQuery = "https://fake.com/?" + buildCmrQuery(decodedUrlObj, granuleNonIndexedKeys, granulePermittedCmrKeys, true);
+        globals.collectionQuery = "https://fake.com/?" + buildCmrQuery(decodedUrlObj, collectionNonIndexedKeys, collectionPermittedCmrKeys, false);
       }
   });
 
@@ -169,42 +170,61 @@ function activate(app: JupyterFrontEnd,
       getUrl.searchParams.append("limit", String(globals.limit));
 
       // Make call to back end
+      const promise = createXhr(current, getUrl);
+      Notification.promise(promise, {
+        pending: { message: 'Getting granule search results', options: {autoClose: 3000}},
+        success: {
+          message: (result, data) => `Pasting granule search results successful`,
+        },
+        error: {
+          message: (reason, data) => `${reason}`,
+        }
+      });
+    }
+  }
+
+  /**
+   * Create Xhr and alert if success or failure 
+   * @param current Current cell in the notebook
+   * @param getUrl Url to fetch 
+   */
+  function createXhr(current: any, getUrl: any): Promise<string> {
+    return new Promise((resolve, reject) => {
       var xhr = new XMLHttpRequest();
       let url_response:any = [];
-
       xhr.onload = function() {
-          if (xhr.status == 200) {
-              let response: any = $.parseJSON(xhr.response);
-              let response_text: any = response.granule_urls;
-              if (response_text == "") {
-                  response_text = "No results found.";
-              }
-              url_response = response_text;
-              if (current) {
-                  NotebookActions.insertBelow(current.content);
-                  NotebookActions.paste(current.content);
-                  current.content.mode = 'edit';
-                  const insert_text = "# generated from this EDSC search: " + globals.edscUrl + "\n" + url_response;
-                  if (current.content.activeCell) {
-                    current.content.activeCell.model.value.text = insert_text;
-                  }
-              }
-          }
-          else {
-              console.log("Error making call to get results. Status is " + xhr.status);
-              Notification.error("Error making call to get search results. Have you selected valid search parameters?", {autoClose: 3000});
-          }
+        if (xhr.status == 200) {
+            let response: any = $.parseJSON(xhr.response);
+            let response_text: any = response.granule_urls;
+            if (response_text == "") {
+                response_text = "No results found.";
+            }
+            url_response = response_text;
+            if (current) {
+                NotebookActions.insertBelow(current.content);
+                NotebookActions.paste(current.content);
+                current.content.mode = 'edit';
+                const insert_text = "# generated from this EDSC search: " + globals.edscUrl + "\n" + url_response;
+                if (current.content.activeCell) {
+                  current.content.activeCell.model.value.text = insert_text;
+                }
+            }
+            resolve('Success');
+        }
+        else {
+            console.log("Error making call to get results. Status is " + xhr.status);
+            //Notification.error("Error making call to get search results. Have you selected valid search parameters?", {autoClose: 3000});
+            reject("Error making call to get search results. Have you selected valid search parameters?");
+        }
       };
 
       xhr.onerror = function() {
           console.log("Error making call to get results");
-        };
+      };
 
       xhr.open("GET", getUrl.href, true);
       xhr.send(null);
-    }
-
-
+    });
   }
 
 
