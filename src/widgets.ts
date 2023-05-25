@@ -1,12 +1,13 @@
 import { Widget } from '@lumino/widgets';
 import { PageConfig } from '@jupyterlab/coreutils'
-import { INotification } from "jupyterlab_toastify";
+import { Notification } from '@jupyterlab/apputils';
 
 import {
   request, RequestResult
 } from './request';
 
-import "./globals"
+//import "./globals"
+import globals from "./globals";
 
 let unique = 0;
 
@@ -64,9 +65,18 @@ class ParamsPopupWidget extends Widget {
     let body = document.createElement('div');
     body.style.display = 'flex';
     body.style.flexDirection = 'column';
-    body.innerHTML = "<pre>Granule search: " + JSON.stringify(granuleParams, null, " ") + "</pre><br>"
-        + "<pre>Collection search: " + JSON.stringify(collectionParams, null, " ") + "</pre><br>"
-        + "<pre>Results Limit: " + limit + "</pre>";
+    
+    let showGranuleParams = globals.granuleParams;
+    let showCollectionParams = globals.collectionParams;
+    if (showGranuleParams != null && showGranuleParams["concept_id"].length == 0) {
+      showGranuleParams = null;
+    }
+    if (showCollectionParams !=null && showCollectionParams["concept_id"].length == 0) {
+      showCollectionParams = null;
+    }
+    body.innerHTML = "<pre>Granule search: " + JSON.stringify(showGranuleParams, null, " ") + "</pre><br>"
+        + "<pre>Collection search: " + JSON.stringify(showCollectionParams, null, " ") + "</pre><br>"
+        + "<pre>Results Limit: " + globals.limit + "</pre>";
 
     super({ node: body });
   }
@@ -101,14 +111,27 @@ export class LimitPopupWidget extends Widget {
 
       let inputLimit = document.createElement('input');
       inputLimit.id = 'inputLimit';
+      inputLimit.value = String(globals.limit);
       this.node.appendChild(inputLimit);
   }
 
   /* sets limit */
+  /**
+   * Check for the following error cases in limit: some letters some numbers, negative number 
+   * float with letters and numbers, operations/ other characters, and value greater than maximum int
+   * (9007199254740991)
+   * A float is automatically rounded down to the next closest integer 
+   */
   getValue() {
-    limit = (<HTMLInputElement>document.getElementById('inputLimit')).value;
-    console.log("new limit is: ", limit)
-    INotification.success("Results limit is now set to " + limit);
+    let limitTemp = parseInt((<HTMLInputElement>document.getElementById('inputLimit')).value);
+    if (Number.isNaN(limitTemp) || limitTemp < 0) {
+      Notification.error("Please enter a positive integer for results limit", {autoClose: 3000});
+    } else if (limitTemp > Number.MAX_SAFE_INTEGER) {
+      Notification.error("Please enter a positive integer less than 9007199254740991");
+    } else {
+      globals.limit = limitTemp;
+    }
+
   }
 
 }
