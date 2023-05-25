@@ -1,8 +1,9 @@
 # Earthdata Search Client Jupyter Extension
 
-Allows users to use the Earthdata Search Client (ESDC) within their JupyterLab workspace.
+Allows users to use the Earthdata Search Client (EDSC) within their JupyterLab workspace.
 
-To launch EDSC in your JupyterLab workspace, navigate to `Data Search -> Open EarthData Search`. This will launch EDSC in a new window within the workspace.
+To launch EDSC in your JupyterLab workspace, navigate to the top tab `Data Search -> Open EarthData Search`. This will launch EDSC in a new window within the workspace.
+<img title="Data Search Menu" alt="Data Search Menu" src="./docs/img/dataSearchMenu.png" width="400">
   
 &nbsp;
 ## Requirements
