@@ -393,7 +393,6 @@ export const encodeTimeline = (timelineQuery, pathname) => {
  * @return {object} Timeline object with query and state
  */
 export const decodeTimeline = (params) => {
-    console.log('graceal1 in decode timeline');
     const { tl: timeline } = params
 
     if (!timeline) return undefined
@@ -553,7 +552,6 @@ const decodedOutputFormat = (pgParam) => {
  * @return {string} An object with encoded Collections
  */
 export const encodeCollections = (props) => {
-    console.log("graceal1 in encode collections");
     const {
         collections = {},
         focusedCollection,
@@ -640,7 +638,6 @@ export const encodeCollections = (props) => {
             if (encodedRemovedGranules) pg[removedKey] = encodedRemovedGranules
 
             // Collection visible, don't encode the focusedCollection
-            //graceal here
             if (index !== 0 && isVisible) pg.v = 't'
 
             // Add the granule encoded granule filters
@@ -686,13 +683,7 @@ export const decodeCollections = (params) => {
     const projectIds = []
     const projectById = {}
 
-    console.log("graceal1 what is returned by p.split");
-    console.log(p.split("!"));
-
     p.split('!').forEach((collectionId, index) => {
-        console.log('graceal1 loop and colleciton id and inex');
-        console.log(collectionId);
-        console.log(index);
         // If there is no collectionId, move on to the next index
         // i.e. there is no focusedCollection
         if (collectionId === '') return
@@ -788,14 +779,6 @@ export const decodeCollections = (params) => {
         }
     }
 
-    console.log("graceal1 printing what is returned by decodeCollections");
-    console.log(collections);
-    console.log(focusedCollection);
-    console.log(project);
-    console.log(allIds);
-    console.log(byId);
-    console.log(projectById);
-    console.log(projectIds);
     return {
         collections,
         focusedCollection,

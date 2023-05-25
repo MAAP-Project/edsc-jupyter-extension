@@ -138,8 +138,6 @@ export const decodeUrlParams = (paramString) => {
     // Fetch collections in the project
     const { collectionIds = [] } = project || {}
 
-    console.log("graceal1 printing collection IDs");
-    console.log(collectionIds);
     // Create a unique list of collections to fetch and remove any empty values [.filter(Boolean)]
     const uniqueCollectionList = [...new Set([
         ...collectionIds,
