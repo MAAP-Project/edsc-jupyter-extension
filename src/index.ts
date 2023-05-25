@@ -83,7 +83,8 @@ function activate(app: JupyterFrontEnd,
         globals.edscUrl = event.data;
         const queryString = '?' + event.data.split('?')[1];
         const decodedUrlObj = decodeUrlParams(queryString);
-        //graceal2 make sure to switch permitted and non index because trying to match funciton definition
+        //graceal Note that I switched granuleNonIndexedKeys and granulePermittedCmrKeys because they were switched in 
+        // buildCmrQuery definition
         globals.granuleQuery = "https://fake.com/?" + buildCmrQuery(decodedUrlObj, granuleNonIndexedKeys, granulePermittedCmrKeys, true);
         globals.collectionQuery = "https://fake.com/?" + buildCmrQuery(decodedUrlObj, collectionNonIndexedKeys, collectionPermittedCmrKeys, false);
       }
