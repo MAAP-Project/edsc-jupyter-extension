@@ -7,7 +7,8 @@ import { PageConfig } from '@jupyterlab/coreutils'
 import { IDocumentManager } from '@jupyterlab/docmanager';
 import { IMainMenu } from '@jupyterlab/mainmenu';
 import { NotebookActions, NotebookPanel, INotebookTracker } from '@jupyterlab/notebook';
-import { request, RequestResult } from './request';
+import { Notification } from '@jupyterlab/apputils';
+
 
 
 /** phosphor imports **/
@@ -15,15 +16,15 @@ import { Menu } from '@lumino/widgets';
 import { ReadonlyJSONObject } from '@lumino/coreutils';
 
 /** other external imports **/
-import { INotification } from "jupyterlab_toastify";
 import * as $ from "jquery";
 
 /** internal imports **/
 import { decodeUrlParams } from './urlParser';
 import '../style/index.css';
 import { IFrameWidget } from './widgets';
-import { setResultsLimit, displaySearchParams } from './popups'
-import "./globals"
+import { setResultsLimit, displaySearchParams } from './popups';
+import globals from "./globals";
+import { request, RequestResult } from './request';
 
 import { buildCmrQuery } from "./buildCmrQuery";
 import { granulePermittedCmrKeys,
@@ -35,6 +36,7 @@ let edsc_server = '';
 console.log(PageConfig.getBaseUrl())
 //var valuesUrl = new URL(PageConfig.getBaseUrl() + 'jupyter-server-extension/maapsec/environment');
 var valuesUrl = new URL(PageConfig.getBaseUrl() + 'jupyter-server-extension/getConfig');
+let DEFAULT_RESULTS_LIMIT = 100;
 
 request('get', valuesUrl.href).then((res: RequestResult) => {
   if (res.ok) {
@@ -76,15 +78,15 @@ function activate(app: JupyterFrontEnd,
   //
   window.addEventListener("message", (event: MessageEvent) => {
       // if the message sent is the edsc url
+      console.log("graceal- message being sent by iframe", event.data);
       if (typeof event.data === "string"){
-          //globals.edscUrl = event.data;
-          edscUrl = event.data;
-          const queryString = '?' + event.data.split('?')[1];
-          const decodedUrlObj = decodeUrlParams(queryString);
-          granuleQuery = "https://fake.com/?" + buildCmrQuery(decodedUrlObj, granulePermittedCmrKeys, granuleNonIndexedKeys, );
-          collectionQuery = "https://fake.com/?" + buildCmrQuery(decodedUrlObj, collectionPermittedCmrKeys, collectionNonIndexedKeys, false);
-          // console.log("Granule", globals.granuleQuery);
-          // console.log("Collection", globals.collectionQuery);
+        globals.edscUrl = event.data;
+        const queryString = '?' + event.data.split('?')[1];
+        const decodedUrlObj = decodeUrlParams(queryString);
+        //graceal Note that I switched granuleNonIndexedKeys and granulePermittedCmrKeys because they were switched in 
+        // buildCmrQuery definition
+        globals.granuleQuery = "https://fake.com/?" + buildCmrQuery(decodedUrlObj, granuleNonIndexedKeys, granulePermittedCmrKeys, true);
+        globals.collectionQuery = "https://fake.com/?" + buildCmrQuery(decodedUrlObj, collectionNonIndexedKeys, collectionPermittedCmrKeys, false);
       }
   });
 
@@ -108,8 +110,8 @@ function activate(app: JupyterFrontEnd,
     const current = getCurrent(args);
 
     // If no search is selected, send an error
-    if (Object.keys(granuleParams).length == 0) {
-        INotification.error("Error: No Search Selected.");
+    if (!globals.granuleParams || Object.keys(globals.granuleParams).length == 0) {
+        Notification.error("Error: No Search Selected. Select collections through the green plus in EarthData Search Client.", {autoClose: 3000});
         return;
     }
 
@@ -118,13 +120,13 @@ function activate(app: JupyterFrontEnd,
 
         var getUrl = new URL(PageConfig.getBaseUrl() + 'jupyter-server-extension/edsc/getQuery');
         if (query_type === 'granule') {
-            getUrl.searchParams.append("cmr_query", granuleQuery);
+            getUrl.searchParams.append("cmr_query", globals.granuleQuery);
             getUrl.searchParams.append("query_type", 'granule');
         } else {
-            getUrl.searchParams.append("cmr_query", collectionQuery);
+            getUrl.searchParams.append("cmr_query", globals.collectionQuery);
             getUrl.searchParams.append("query_type", 'collection');
         }
-        getUrl.searchParams.append("limit", limit);
+        getUrl.searchParams.append("limit", String(globals.limit));
 
         // Make call to back end
         var xhr = new XMLHttpRequest();
@@ -141,7 +143,7 @@ function activate(app: JupyterFrontEnd,
                   NotebookActions.insertBelow(current.content);
                   NotebookActions.paste(current.content);
                   current.content.mode = 'edit';
-                  const insert_text = "# generated from this EDSC search: " + edscUrl + "\n" + response_text;
+                  const insert_text = "# generated from this EDSC search: " + globals.edscUrl + "\n" + response_text;
                   if (current.content.activeCell) {
                     current.content.activeCell.model.value.text = insert_text;
                   }
@@ -149,7 +151,7 @@ function activate(app: JupyterFrontEnd,
           }
           else {
               console.log("Error making call to get query. Status is " + xhr.status);
-              INotification.error("Error making call to get search query. Have you selected valid search parameters?");
+              Notification.error("Error making call to get search query. Have you selected valid search parameters?", {autoClose: 3000});
           }
         };
 
@@ -165,46 +167,65 @@ function activate(app: JupyterFrontEnd,
     } else {
 
       var getUrl = new URL(PageConfig.getBaseUrl() + 'jupyter-server-extension/edsc/getGranules');
-      getUrl.searchParams.append("cmr_query", granuleQuery);
-      getUrl.searchParams.append("limit", limit);
+      getUrl.searchParams.append("cmr_query", globals.granuleQuery);
+      getUrl.searchParams.append("limit", String(globals.limit));
 
       // Make call to back end
+      const promise = createXhr(current, getUrl);
+      Notification.promise(promise, {
+        pending: { message: 'Getting granule search results', options: {autoClose: 3000}},
+        success: {
+          message: (result, data) => `Pasting granule search results successful`,
+        },
+        error: {
+          message: (reason, data) => `${reason}`,
+        }
+      });
+    }
+  }
+
+  /**
+   * Create Xhr and alert if success or failure 
+   * @param current Current cell in the notebook
+   * @param getUrl Url to fetch 
+   */
+  function createXhr(current: any, getUrl: any): Promise<string> {
+    return new Promise((resolve, reject) => {
       var xhr = new XMLHttpRequest();
       let url_response:any = [];
-
       xhr.onload = function() {
-          if (xhr.status == 200) {
-              let response: any = $.parseJSON(xhr.response);
-              let response_text: any = response.granule_urls;
-              if (response_text == "") {
-                  response_text = "No results found.";
-              }
-              url_response = response_text;
-              if (current) {
-                  NotebookActions.insertBelow(current.content);
-                  NotebookActions.paste(current.content);
-                  current.content.mode = 'edit';
-                  const insert_text = "# generated from this EDSC search: " + edscUrl + "\n" + url_response;
-                  if (current.content.activeCell) {
-                    current.content.activeCell.model.value.text = insert_text;
-                  }
-              }
-          }
-          else {
-              console.log("Error making call to get results. Status is " + xhr.status);
-               INotification.error("Error making call to get search results. Have you selected valid search parameters?");
-          }
+        if (xhr.status == 200) {
+            let response: any = $.parseJSON(xhr.response);
+            let response_text: any = response.granule_urls;
+            if (response_text == "") {
+                response_text = "No results found.";
+            }
+            url_response = response_text;
+            if (current) {
+                NotebookActions.insertBelow(current.content);
+                NotebookActions.paste(current.content);
+                current.content.mode = 'edit';
+                const insert_text = "# generated from this EDSC search: " + globals.edscUrl + "\n" + url_response;
+                if (current.content.activeCell) {
+                  current.content.activeCell.model.value.text = insert_text;
+                }
+            }
+            resolve('Success');
+        }
+        else {
+            console.log("Error making call to get results. Status is " + xhr.status);
+            //Notification.error("Error making call to get search results. Have you selected valid search parameters?", {autoClose: 3000});
+            reject("Error making call to get search results. Have you selected valid search parameters?");
+        }
       };
 
       xhr.onerror = function() {
           console.log("Error making call to get results");
-        };
+      };
 
       xhr.open("GET", getUrl.href, true);
       xhr.send(null);
-    }
-
-
+    });
   }
 
 
@@ -311,6 +332,10 @@ function activate(app: JupyterFrontEnd,
 
 
   console.log('JupyterLab extension edsc_extension is activated!');
+  // assign default values because globals file wasn't doing it
+  globals.limit = DEFAULT_RESULTS_LIMIT;
+  globals.granuleParams = null;
+  globals.collectionParams = null;
   return instanceTracker;
 };
 
