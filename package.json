@@ -1,6 +1,6 @@
 {
   "name": "@maap-jupyterlab/edsc-jupyter-extension",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Access EarthdataSeach Client from the ADE.",
   "keywords": [
     "jupyter",

@@ -78,7 +78,6 @@ function activate(app: JupyterFrontEnd,
   //
   window.addEventListener("message", (event: MessageEvent) => {
       // if the message sent is the edsc url
-      console.log("graceal- message being sent by iframe", event.data);
       if (typeof event.data === "string"){
         globals.edscUrl = event.data;
         const queryString = '?' + event.data.split('?')[1];
