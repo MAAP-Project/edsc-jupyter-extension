@@ -40,8 +40,10 @@ let DEFAULT_RESULTS_LIMIT = 100;
 
 request('get', valuesUrl.href).then((res: RequestResult) => {
   if (res.ok) {
-    let environment = JSON.parse(res.data);
-    edsc_server = 'https://' + environment['edsc_server'];
+    //let environment = JSON.parse(res.data);
+    //edsc_server = 'https://' + environment['edsc_server'];
+    console.log(JSON.parse(res.data));
+    edsc_server = 'https://ade.maap-project.org:30052/search';
   }
 });
 
@@ -78,7 +80,11 @@ function activate(app: JupyterFrontEnd,
   //
   window.addEventListener("message", (event: MessageEvent) => {
       // if the message sent is the edsc url
+      console.log("graceal1 in window add event listener and printing event");
+      console.log(event);
       if (typeof event.data === "string"){
+        console.log("graceal1 event data was a string, with data: ");
+        console.log(event.data);
         globals.edscUrl = event.data;
         const queryString = '?' + event.data.split('?')[1];
         const decodedUrlObj = decodeUrlParams(queryString);
