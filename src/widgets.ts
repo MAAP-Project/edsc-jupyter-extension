@@ -1,5 +1,5 @@
 import { Widget } from '@lumino/widgets';
-import { PageConfig } from '@jupyterlab/coreutils'
+//import { PageConfig } from '@jupyterlab/coreutils'
 import { Notification } from '@jupyterlab/apputils';
 
 import {
@@ -11,7 +11,7 @@ import globals from "./globals";
 
 let unique = 0;
 
-export
+/*export
 class IFrameWidget extends Widget {
 
   constructor(path: string) {
@@ -53,8 +53,8 @@ class IFrameWidget extends Widget {
     div.appendChild(iframe);
     this.node.appendChild(div);
   }
-};
-/*
+};*/
+
 
 //
 // Widget to display Earth Data Search Client inside an iframe
@@ -127,7 +127,7 @@ export class IFrameWidget extends Widget {
       }
     });
   }
-}*/
+}
 
 
 //

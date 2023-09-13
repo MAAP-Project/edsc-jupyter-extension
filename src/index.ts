@@ -40,8 +40,9 @@ let DEFAULT_RESULTS_LIMIT = 100;
 
 request('get', valuesUrl.href).then((res: RequestResult) => {
   if (res.ok) {
-    let environment = JSON.parse(res.data);
-    edsc_server = 'https://' + environment['edsc_server'];
+    //let environment = JSON.parse(res.data);
+    //edsc_server = 'https://' + environment['edsc_server'];
+    edsc_server = 'https://ade.maap-project.org:30052/search';
   }
 });
 
