@@ -11,9 +11,6 @@ import globals from "./globals";
 
 let unique = 0;
 
-//
-// Widget to display Earth Data Search Client inside an iframe
-//
 export
 class IFrameWidget extends Widget {
 
@@ -31,6 +28,8 @@ class IFrameWidget extends Widget {
     iframe.id = "iframeid";
 
     // set proxy to EDSC
+    console.log("graceal1 in iframe constructor with path");
+    console.log(path);
     request('get', path).then((res: RequestResult) => {
       if (res.ok){
         console.log('site accesible: proceeding');
@@ -55,6 +54,81 @@ class IFrameWidget extends Widget {
     this.node.appendChild(div);
   }
 };
+/*
+
+//
+// Widget to display Earth Data Search Client inside an iframe
+//
+export class IFrameWidget extends Widget {
+  private iframe: HTMLIFrameElement;
+  //private originalPath: string;
+  private currentPath: string;
+
+  constructor(path: string) {
+    super();
+    this.id = path + '-' + unique;
+    unique += 1;
+
+    this.title.label = "Earthdata Search";
+    this.title.closable = true;
+
+    let div = document.createElement('div');
+    div.classList.add('iframe-widget');
+    this.iframe = document.createElement('iframe');
+    this.iframe.id = "iframeid";
+
+    // Store the original path
+    //this.originalPath = path;
+    this.currentPath = path;
+
+    // Add the iframe to the widget
+    div.appendChild(this.iframe);
+    this.node.appendChild(div);
+
+    // Set up an event listener to handle URL changes in the iframe
+    this.iframe.addEventListener('load', this.handleIFrameLoad.bind(this));
+
+    // Load the initial URL
+    this.loadURL(path);
+  }
+
+  private handleIFrameLoad(event: Event) {
+    console.log("graceal1 in handle iframe load with ");
+    console.log(event);
+    // Check if the current URL has changed
+    if (this.iframe.contentWindow && this.currentPath !== this.iframe.contentWindow.location.href) {
+      // Update the current path
+      this.currentPath = this.iframe.contentWindow.location.href;
+      // Load the new URL
+      this.loadURL(this.currentPath);
+    }
+  }
+
+  private loadURL(path: string) {
+    // set proxy to EDSC
+    console.log("graceal1 in load url ");
+    console.log(path);
+    request('get', path).then((res: RequestResult) => {
+      if (res.ok) {
+        console.log('site accessible: proceeding');
+        this.iframe.src = path;
+      } else {
+        console.log('site failed with code ' + res.status.toString());
+        if (res.status == 404) {
+          // Handle 404 error
+        } else if (res.status == 401) {
+          // Handle 401 error
+        } else {
+          console.log('setting proxy');
+          // Modify the path to use the proxy
+          path = "edsc/proxy/" + path;
+          this.iframe.src = path;
+        }
+      }
+    });
+  }
+}*/
+
 
 //
 // Widget to display selected search parameter
