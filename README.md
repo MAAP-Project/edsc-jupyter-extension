@@ -39,7 +39,7 @@ The `jlpm` command is JupyterLab's pinned version of
 
 ```bash
 # Clone the repo to your local environment
-# Change directory to the edsc_jupyter_extension directory
+# Change directory to the edsc-jupyter-extension directory
 # Install package in development mode
 pip install -e .
 # Link your development version of the extension with JupyterLab
@@ -64,6 +64,9 @@ By default, the `jlpm build` command generates the source maps for this extensio
 ```bash
 jupyter lab build --minimize=False
 ```
+
+### Troubleshooting
+Try running `pip install jupyter_packaging`. If you are still getting a Module Not Found error for jupyter_packaging, try running the above commands with `sudo`
   
 &nbsp;
 ## Development uninstall
