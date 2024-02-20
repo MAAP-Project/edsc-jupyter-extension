@@ -8,7 +8,9 @@ node_modules/
 *.ipynb
 *.tsbuildinfo
 edsc_jupyter_extension/labextension
+edsc_jupyter_extension/_version.py
 package-lock.json
+maap.cfg
 
 # Created by https://www.gitignore.io/api/python
 # Edit at https://www.gitignore.io/?templates=python
