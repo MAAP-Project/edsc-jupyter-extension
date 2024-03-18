@@ -16,7 +16,7 @@ To launch EDSC in your JupyterLab workspace, navigate to the top tab `Data Searc
 To install the extension, execute:
 
 ```bash
-jupyter labextension install @maap-jupyterlab/edsc-jupyter-extension
+pip install maap-edsc-jupyter-extension
 ```
   
 &nbsp;
@@ -25,7 +25,7 @@ jupyter labextension install @maap-jupyterlab/edsc-jupyter-extension
 To remove the extension, execute:
 
 ```bash
-jupyter labextension uninstall @maap-jupyterlab/edsc-jupyter-extension
+pip uninstall maap-edsc-jupyter-extension
 ```
   
 &nbsp;
@@ -72,7 +72,7 @@ Try running `pip install jupyter_packaging`. If you are still getting a Module N
 ## Development uninstall
 
 ```bash
-pip uninstall edsc_jupyter_extension
+pip uninstall maap_edsc_jupyter_extension
 ```
 
 In development mode, you will also need to remove the symlink created by `jupyter labextension develop`

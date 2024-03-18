@@ -1,6 +1,6 @@
 {
-  "name": "@maap-jupyterlab/edsc-jupyter-extension",
-  "version": "1.0.5",
+  "name": "maap-edsc-jupyter-extension",
+  "version": "1.1.0",
   "description": "Access EarthdataSeach Client from the ADE.",
   "keywords": [
     "jupyter",
@@ -36,7 +36,7 @@
     "clean": "jlpm clean:lib",
     "clean:lib": "rimraf lib tsconfig.tsbuildinfo",
     "clean:lintcache": "rimraf .eslintcache .stylelintcache",
-    "clean:labextension": "rimraf edsc_jupyter_extension/labextension",
+    "clean:labextension": "rimraf maap_edsc_jupyter_extension/labextension",
     "clean:all": "jlpm clean:lib && jlpm clean:labextension && jlpm clean:lintcache",
     "eslint": "jlpm eslint:check --fix",
     "eslint:check": "eslint . --cache --ext .ts,.tsx",
@@ -64,7 +64,6 @@
     "@jupyterlab/statedb": "^3.1.0",
     "@lumino/coreutils": "^1.5.2",
     "@lumino/widgets": "^1.13.2",
-    "@maap-jupyterlab/edsc-jupyter-extension": "^1.0.1",
     "jquery": "^3.5.1",
     "qs": "^6.9.4",
     "react-toastify": "^8.2.0"
@@ -99,7 +98,7 @@
   },
   "jupyterlab": {
     "extension": true,
-    "outputDir": "edsc_jupyter_extension/labextension"
+    "outputDir": "maap_edsc_jupyter_extension/labextension"
   },
   "jupyter-releaser": {
     "hooks": {
