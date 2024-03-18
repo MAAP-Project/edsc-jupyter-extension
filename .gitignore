@@ -7,8 +7,8 @@ node_modules/
 .ipynb_checkpoints
 *.ipynb
 *.tsbuildinfo
-edsc_jupyter_extension/labextension
-edsc_jupyter_extension/_version.py
+maap_edsc_jupyter_extension/labextension
+maap_edsc_jupyter_extension/_version.py
 package-lock.json
 maap.cfg
 
