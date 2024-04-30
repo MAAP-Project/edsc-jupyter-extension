@@ -33,8 +33,6 @@ import { granulePermittedCmrKeys,
         collectionNonIndexedKeys } from "./searchKeys";
 
 let edsc_server = '';
-console.log(PageConfig.getBaseUrl())
-//var valuesUrl = new URL(PageConfig.getBaseUrl() + 'jupyter-server-extension/maapsec/environment');
 var valuesUrl = new URL(PageConfig.getBaseUrl() + 'jupyter-server-extension/getConfig');
 let DEFAULT_RESULTS_LIMIT = 100;
 
@@ -144,7 +142,7 @@ function activate(app: JupyterFrontEnd,
                   current.content.mode = 'edit';
                   const insert_text = "# generated from this EDSC search: " + globals.edscUrl + "\n" + response_text;
                   if (current.content.activeCell) {
-                    current.content.activeCell.model.value.text = insert_text;
+                    current.content.activeCell.model.sharedModel.setSource(insert_text);
                   }
               }
           }
@@ -320,7 +318,7 @@ function activate(app: JupyterFrontEnd,
   ].forEach(command => {
     searchMenu.addItem({ command });
   });
-  mainMenu.addMenu(searchMenu, { rank: 100 });
+  mainMenu.addMenu(searchMenu, true, { rank: 100 });
 
 
   // Track and restore the widget state

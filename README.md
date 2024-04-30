@@ -8,9 +8,13 @@ To launch EDSC in your JupyterLab workspace, navigate to the top tab `Data Searc
 &nbsp;
 ## Requirements
 
-* JupyterLab >= 3.4
+| Package | Version |
+|---------|---------|
+| JupyterLab | v4.1.6 |
+| NodeJS | v18 |
+
+These are the recommended versions. Others may be suitable, but are not actively supported.
   
-&nbsp;
 ## Install
 
 To install the extension, execute:
@@ -19,7 +23,6 @@ To install the extension, execute:
 pip install maap-edsc-jupyter-extension
 ```
   
-&nbsp;
 ## Uninstall
 
 To remove the extension, execute:
@@ -28,7 +31,6 @@ To remove the extension, execute:
 pip uninstall maap-edsc-jupyter-extension
 ```
   
-&nbsp;
 ## Development install
 
 Note: You will need NodeJS to build the extension package.
@@ -40,6 +42,8 @@ The `jlpm` command is JupyterLab's pinned version of
 ```bash
 # Clone the repo to your local environment
 # Change directory to the edsc-jupyter-extension directory
+# Install dependencies
+yarn install
 # Install package in development mode
 pip install -e .
 # Link your development version of the extension with JupyterLab
@@ -68,7 +72,6 @@ jupyter lab build --minimize=False
 ### Troubleshooting
 Try running `pip install jupyter_packaging`. If you are still getting a Module Not Found error for jupyter_packaging, try running the above commands with `sudo`
   
-&nbsp;
 ## Development uninstall
 
 ```bash
@@ -79,6 +82,10 @@ In development mode, you will also need to remove the symlink created by `jupyte
 command. To find its location, you can run `jupyter labextension list` to figure out where the `labextensions`
 folder is located. Then you can remove the symlink named `edsc-jupyter-extension` within that folder.
   
-&nbsp;
-## Questions?
-Refer to the [Q&A discussion board](https://github.com/MAAP-Project/edsc-jupyter-extension/discussions/categories/q-a).
+## Release
+
+See [RELEASE](RELEASE.md)
+
+## Contribute
+
+See [CONTRIBUTING](CONTRIBUTING.md)
