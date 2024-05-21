@@ -328,7 +328,7 @@ function activate(app: JupyterFrontEnd,
   });
 
 
-  console.log('JupyterLab extension edsc_extension is activated!');
+  console.log('JupyterLab MAAP Earth Data Search Client extension is activated!');
   // assign default values because globals file wasn't doing it
   globals.limit = DEFAULT_RESULTS_LIMIT;
   globals.granuleParams = null;

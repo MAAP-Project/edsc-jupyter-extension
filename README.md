@@ -11,7 +11,8 @@ To launch EDSC in your JupyterLab workspace, navigate to the top tab `Data Searc
 | Package | Version |
 |---------|---------|
 | JupyterLab | v4.1.6 |
-| NodeJS | v18 |
+| NodeJS | v18.20.0 |
+| Python | >= v3.8 |
 
 These are the recommended versions. Others may be suitable, but are not actively supported.
   
@@ -43,7 +44,7 @@ The `jlpm` command is JupyterLab's pinned version of
 # Clone the repo to your local environment
 # Change directory to the edsc-jupyter-extension directory
 # Install dependencies
-yarn install
+jlpm install
 # Install package in development mode
 pip install -e .
 # Link your development version of the extension with JupyterLab
@@ -81,6 +82,19 @@ pip uninstall maap_edsc_jupyter_extension
 In development mode, you will also need to remove the symlink created by `jupyter labextension develop`
 command. To find its location, you can run `jupyter labextension list` to figure out where the `labextensions`
 folder is located. Then you can remove the symlink named `edsc-jupyter-extension` within that folder.
+
+## Testing
+
+Playwright is the testing framework used. When testing locally, use the following command to start the jupyter server and run the tests:
+```
+jlpm run start & jlpm run test
+```
+
+To test using the interactive UI, run the following instead:
+
+```
+jlpm run start & jlpm run test --ui
+```
   
 ## Release
 
