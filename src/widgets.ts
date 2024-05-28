@@ -33,18 +33,14 @@ class IFrameWidget extends Widget {
     // set proxy to EDSC
     request('get', path).then((res: RequestResult) => {
       if (res.ok){
-        console.log('site accesible: proceeding');
         iframe.src = path;
       } else {
         iframe.setAttribute('baseURI', PageConfig.getBaseUrl());
-
-        console.log('site failed with code ' + res.status.toString());
         if(res.status == 404){
 
         } else if(res.status == 401){
 
         } else {
-          console.log('setting proxy');
           path = "edsc/proxy/" + path;
           iframe.src = path;
         }
