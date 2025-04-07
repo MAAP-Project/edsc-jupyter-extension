@@ -58,7 +58,6 @@
     "@lumino/coreutils": "^2.0.0",
     "@lumino/widgets": "^2.0.0",
     "jquery": "^3.5.1",
-    "playwright": "^1.44.0",
     "qs": "^6.9.4",
     "react-toastify": "^8.2.0"
   },
